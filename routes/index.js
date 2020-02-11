@@ -9,6 +9,10 @@ module.exports = (app) => {
   app.post('/file', upload.single('file'), async (req, res, next) => {
     await node.ready
 
+    if (!req.file) {
+      return res.status(400).send({ message: 'You should upload a file' })
+    }
+
     const file = await node.add(req.file.buffer)
     return res.send(file)
   })
